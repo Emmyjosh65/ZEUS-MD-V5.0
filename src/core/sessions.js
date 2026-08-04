@@ -1,0 +1,35 @@
+import fs from 'fs';
+import path from 'path';
+
+export function ensureSessionDir(dir) {
+  if (fs.existsSync(dir)) {
+    const st = fs.statSync(dir);
+    if (st.isDirectory()) return;
+    console.warn('⚠️ "sessions" is a file. Removing and creating a folder...');
+    fs.rmSync(dir, { force: true });
+  }
+  fs.mkdirSync(dir, { recursive: true });
+}
+
+export function quarantineCorruptSession(dir) {
+  let removed = 0;
+  try {
+    for (const f of fs.readdirSync(dir)) {
+      if (!f.endsWith('.json')) continue;
+      const p = path.join(dir, f);
+      try {
+        JSON.parse(fs.readFileSync(p, 'utf8'));
+      } catch {
+        console.warn(`🧹 Removing corrupted session file: ${f}`);
+        fs.rmSync(p, { force: true });
+        removed++;
+      }
+    }
+  } catch { }
+  return removed;
+}
+
+export function clearSessions(dir) {
+  try { fs.rmSync(dir, { recursive: true, force: true }); } catch {}
+  fs.mkdirSync(dir, { recursive: true });
+}

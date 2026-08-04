@@ -1,0 +1,21 @@
+{
+  "name": "zeus-md",
+  "version": "3.1.0",
+  "description": "ZEUS-MD — WhatsApp bot (Baileys MD + Groq AI)",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "6.7.23",
+    "dotenv": "^16.4.5",
+    "pino": "^9.6.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
